@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101827">
+<title>AMRN | EMT-2 / ESMO LBA30 Countdown</title>
+<style>
+  :root { color-scheme: dark; --bg:#101827; --panel:#182437; --line:#33445d; --text:#f5f7fb; --muted:#b7c3d5; --accent:#f4c95d; }
+  * { box-sizing:border-box; }
+  body { margin:0; min-height:100vh; display:grid; place-items:center; padding:24px; background:radial-gradient(ellipse at top,#223752 0%,var(--bg) 60%); color:var(--text); font-family:Arial,Helvetica,sans-serif; }
+  main { width:min(820px,100%); text-align:center; }
+  .eyebrow { color:var(--accent); font-weight:800; letter-spacing:.18em; font-size:.82rem; }
+  h1 { margin:.5rem 0 .35rem; font-size:clamp(2rem,6vw,4.2rem); line-height:1.02; }
+  .subtitle { color:var(--muted); font-size:clamp(1rem,2.5vw,1.25rem); margin:0 auto 1.7rem; max-width:650px; }
+  .clock { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:clamp(7px,2vw,16px); margin:0 auto 1.3rem; }
+  .unit { background:linear-gradient(180deg,#1c2b41,#141f30); border:1px solid var(--line); border-radius:16px; padding:clamp(12px,3vw,24px) 6px; }
+  .num { display:block; font-variant-numeric:tabular-nums; font-weight:900; font-size:clamp(2rem,8vw,5rem); line-height:1.05; color:var(--accent); }
+  .label { display:block; margin-top:9px; font-size:.75rem; letter-spacing:.15em; color:var(--muted); font-weight:800; }
+  .target { border-top:1px solid var(--line); padding-top:1.1rem; color:var(--muted); line-height:1.6; }
+  .target strong { color:var(--text); }
+  .note { font-size:.82rem; color:#93a4bb; margin-top:1.1rem; }
+  @media(max-width:420px) { body{padding:14px} .clock{gap:6px} .unit{border-radius:10px} .label{font-size:.62rem;letter-spacing:.08em} }
+</style>
+</head>
+<body>
+<main>
+  <div class="eyebrow">AMRN • EMT-2 • LBA30</div>
+  <h1>THE COUNTDOWN IS ON</h1>
+  <p class="subtitle">Phase 3 EMT-2 results at ESMO Congress 2026</p>
+  <section class="clock" aria-label="Countdown to the scheduled presentation">
+    <div class="unit"><span class="num" id="days">--</span><span class="label">DAYS</span></div>
+    <div class="unit"><span class="num" id="hours">--</span><span class="label">HOURS</span></div>
+    <div class="unit"><span class="num" id="minutes">--</span><span class="label">MINUTES</span></div>
+    <div class="unit"><span class="num" id="seconds">--</span><span class="label">SECONDS</span></div>
+  </section>
+  <div class="target">
+    <strong>Target:</strong> Sunday, October 25, 2026<br>
+    <strong>4:15 AM Houston time (CDT)</strong> · 10:15 AM Madrid time (CET)<br>
+    Countdown targets the scheduled LBA30 presentation time; confirm the official ESMO schedule for any changes.
+  </div>
+  <div class="note">No outcome is implied. LBA30 designation is not evidence that EMT-2 met its endpoints.</div>
+</main>
+<script>
+(() => {
+  // 2026-10-25 10:15 in Madrid after the daylight-saving change: UTC+01:00.
+  const target = new Date("2026-10-25T10:15:00+01:00").getTime();
+  const ids = ["days","hours","minutes","seconds"].map(id => document.getElementById(id));
+  function update() {
+    let remaining = Math.max(0, target - Date.now());
+    const values = [
+      Math.floor(remaining / 86400000),
+      Math.floor((remaining % 86400000) / 3600000),
+      Math.floor((remaining % 3600000) / 60000),
+      Math.floor((remaining % 60000) / 1000)
+    ];
+    ids.forEach((el, i) => el.textContent = String(values[i]).padStart(2,"0"));
+    if (remaining <= 0) {
+      document.querySelector("h1").textContent = "LBA30 PRESENTATION TIME";
+      document.querySelector(".subtitle").textContent = "The scheduled EMT-2 data presentation time has arrived.";
+    }
+  }
+  update();
+  setInterval(update, 1000);
+})();
+</script>
+</body>
+</html>
